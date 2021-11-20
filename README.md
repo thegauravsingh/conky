@@ -1,2 +1,2 @@
 # conky
-This is my settings for conky
+This is my settings for conky!
