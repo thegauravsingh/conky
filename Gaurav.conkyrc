@@ -64,7 +64,7 @@ conky.config = {
 
 	--Placement
 
-	alignment = 'middle_right',						-- top_left,top_middle,top_right,bottom_left,bottom_middle,bottom_right,
+	alignment = 'top_right',						-- top_left,top_middle,top_right,bottom_left,bottom_middle,bottom_right,
 												-- middle_left,middle_middle,middle_right,none
 	--Arch Duoscreen
 	--gap_x = -1910,
@@ -149,63 +149,77 @@ ${color5}${font Roboto:size=10}${voffset 2}S Y S T E M   ${hr 2}${font}${color}
 #${color2}${voffset 8}Hostname:${color} ${alignr}${nodename}
 ${color2}Distro:${color}${alignr}$sysname ${alignr}${execi 6000 lsb_release -a | grep 'Description'|awk {'print $3, $4, $5'}}
 ${color2}Kernel:${color}${alignr}${exec uname} ${exec uname -r}
-Nvidia: ${alignr}${execp  nvidia-smi --query-supported-clocks=gpu_name --format=csv,noheader}
-Nvidia Driver: ${alignr}${execi 60000 nvidia-smi | grep "Driver Version"| awk {'print $3'}}
+#Nvidia: ${alignr}${execp  nvidia-smi --query-supported-clocks=gpu_name --format=csv,noheader}
+#Nvidia Driver: ${alignr}${execi 60000 nvidia-smi | grep "Driver Version"| awk {'print $3'}}
 ${color2}Uptime:${color} ${alignr}${uptime}
-${color5}${font Roboto:size=10}P R O C E S S O R S  ${hr 2}${font}${color}
+${color5}${font Roboto:size=10}N V I D I A   ${hr 2}${font}
+${font Roboto:size=10}${color5}${execp  nvidia-smi --query-supported-clocks=gpu_name --format=csv,noheader}${font}
+#${font StyleBats:size=20}${font}${offset 8}${voffset -12}GPU Temp ${alignr}${execi 60 nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader} °C
+${offset 20}Driver ${alignr}${execi 60000 nvidia-smi | grep "Driver Version"| awk {'print $3'}} 
+${offset 20}GPU Temp ${alignr}${execi 60 nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader} °C
+${offset 20}GPU Clock ${alignr}${execi 60 nvidia-settings -q GPUCurrentClockFreqs | grep -m 1 Attribute | awk '{print $4}' | sed -e 's/\.//' | cut -d, -f1} MHz
+${offset 20}Mem Clock ${alignr}${execi 60 nvidia-settings -q all| grep -m 1 GPUCurrentClockFreqs | awk '{print $4}'  | sed -e 's/\.//' | cut -d, -f1} MHz
+${offset 20}Mem Used ${alignr}${execi 60 nvidia-settings -q [gpu:0]/UsedDedicatedGPUMemory -t} / ${exec nvidia-settings -q [gpu:0]/TotalDedicatedGPUMemory -t} MiB0
+
+${color5}${font Roboto:size=10}A M D 2 7 0 0 X  ${hr 2}${font}${color}
 ${color2}CPU Freq:${color} $alignr${freq}MHz
 ${color2}CPU Temp:${color} $alignr${execi 10 sensors | grep 'Tdie' | awk {'print $2'}}
-${color2}CPU Usage:${color} $cpu% ${cpubar 11,0}
+#${color2}CPU Usage:${color} $cpu% ${cpubar 11,0}
 ${color2}History:${color} ${cpugraph 11,0}
-#${color2}${offset 30}CPU Core 1:${color} ${alignr}${offset -10}${cpu cpu1}%${alignr}${cpubar cpu1}
-#${color2}${offset 30}CPU Core 2:${color} ${alignr}${offset -10}${cpu cpu2}%${alignr}${cpubar cpu2}
-#${color2}${offset 30}CPU Core 3:${color} ${alignr}${offset -10}${cpu cpu3}%${alignr}${cpubar cpu3}
-#${color2}${offset 30}CPU Core 4:${color} ${alignr}${offset -10}${cpu cpu4}%${alignr}${cpubar cpu4}
-#${color2}${offset 30}CPU Core 5:${color} ${alignr}${offset -10}${cpu cpu5}%${alignr}${cpubar cpu5}
-#${color2}${offset 30}CPU Core 6:${color} ${alignr}${offset -10}${cpu cpu6}%${alignr}${cpubar cpu6}
-#${color2}${offset 30}CPU Core 7:${color} ${alignr}${offset -10}${cpu cpu7}%${alignr}${cpubar cpu7}
-#${color2}${offset 30}CPU Core 8:${color} ${alignr}${offset -10}${cpu cpu8}%${alignr}${cpubar cpu8}
-#${color2}${offset 30}CPU Core 9:${color} ${alignr}${offset -10}${cpu cpu9}%${alignr}${cpubar cpu9}
-#${color2}${offset 30}CPU Core 10:${color} ${alignr}${offset -10}${cpu cpu10}%${alignr}${cpubar cpu10}
-#${color2}${offset 30}CPU Core 11:${color} ${alignr}${offset -10}${cpu cpu11}%${alignr}${cpubar cpu11}
-#${color2}${offset 30}CPU Core 12:${color} ${alignr}${offset -10}${cpu cpu12}%${alignr}${cpubar cpu12}
-#${color2}${offset 30}CPU Core 13:${color} ${alignr}${offset -10}${cpu cpu13}%${alignr}${cpubar cpu13}
-#${color2}${offset 30}CPU Core 14:${color} ${alignr}${offset -10}${cpu cpu14}%${alignr}${cpubar cpu14}
-#${color2}${offset 30}CPU Core 15:${color} ${alignr}${offset -10}${cpu cpu15}%${alignr}${cpubar cpu15}
-#${color2}${offset 30}CPU Core 16:${color} ${alignr}${offset -10}${cpu cpu16}%${alignr}${cpubar cpu16}
-${color2}Top Processes${goto 222}cpu%${goto 274}mem%${color}
+#${color2}${offset 20}CPU Core 1:${color} ${alignr}${offset -10}${cpu cpu1}%${alignr}${cpubar cpu1}
+#${color2}${offset 20}CPU Core 2:${color} ${alignr}${offset -10}${cpu cpu2}%${alignr}${cpubar cpu2}
+#${color2}${offset 20}CPU Core 3:${color} ${alignr}${offset -10}${cpu cpu3}%${alignr}${cpubar cpu3}
+#${color2}${offset 20}CPU Core 4:${color} ${alignr}${offset -10}${cpu cpu4}%${alignr}${cpubar cpu4}
+#${color2}${offset 20}CPU Core 5:${color} ${alignr}${offset -10}${cpu cpu5}%${alignr}${cpubar cpu5}
+#${color2}${offset 20}CPU Core 6:${color} ${alignr}${offset -10}${cpu cpu6}%${alignr}${cpubar cpu6}
+#${color2}${offset 20}CPU Core 7:${color} ${alignr}${offset -10}${cpu cpu7}%${alignr}${cpubar cpu7}
+#${color2}${offset 20}CPU Core 8:${color} ${alignr}${offset -10}${cpu cpu8}%${alignr}${cpubar cpu8}
+#${color2}${offset 20}CPU Core 9:${color} ${alignr}${offset -10}${cpu cpu9}%${alignr}${cpubar cpu9}
+#${color2}${offset 20}CPU Core 10:${color} ${alignr}${offset -10}${cpu cpu10}%${alignr}${cpubar cpu10}
+#${color2}${offset 20}CPU Core 11:${color} ${alignr}${offset -10}${cpu cpu11}%${alignr}${cpubar cpu11}
+#${color2}${offset 20}CPU Core 12:${color} ${alignr}${offset -10}${cpu cpu12}%${alignr}${cpubar cpu12}
+#${color2}${offset 20}CPU Core 13:${color} ${alignr}${offset -10}${cpu cpu13}%${alignr}${cpubar cpu13}
+#${color2}${offset 20}CPU Core 14:${color} ${alignr}${offset -10}${cpu cpu14}%${alignr}${cpubar cpu14}
+#${color2}${offset 20}CPU Core 15:${color} ${alignr}${offset -10}${cpu cpu15}%${alignr}${cpubar cpu15}
+#${color2}${offset 20}CPU Core 16:${color} ${alignr}${offset -10}${cpu cpu16}%${alignr}${cpubar cpu16}
+${color5}${font Roboto:size=10}C O R E S  ${hr 2}${font}${color}
+
+${color2}${offset 20}${cpu cpu1}%  ${cpubar cpu1} ${alignr}${offset -10} ${cpu cpu9}%${alignr}${cpubar cpu9}
+${color2}${offset 20}${cpu cpu2}%  ${cpubar cpu2} ${alignr}${offset -10}${cpu cpu10}%${alignr}${cpubar cpu10} 
+${color2}${offset 20}${cpu cpu3}%  ${cpubar cpu3} ${alignr}${offset -10}${cpu cpu11}%${alignr}${cpubar cpu11}
+${color2}${offset 20}${cpu cpu4}%  ${cpubar cpu4} ${alignr}${offset -10}${cpu cpu12}%${alignr}${cpubar cpu12}
+${color2}${offset 20}${cpu cpu5}%  ${cpubar cpu5} ${alignr}${offset -10}${cpu cpu13}%${alignr}${cpubar cpu13}
+${color2}${offset 20}${cpu cpu6}%  ${cpubar cpu6} ${alignr}${offset -10}${cpu cpu14}%${alignr}${cpubar cpu14}
+${color2}${offset 20}${cpu cpu7}%  ${cpubar cpu7} ${alignr}${offset -10}${cpu cpu15}%${alignr}${cpubar cpu15}
+${color2}${offset 20}${cpu cpu8}%  ${cpubar cpu8} ${alignr}${offset -10}${cpu cpu16}%${alignr}${cpubar cpu16}
+
+${color2}${offset 20}Top Processes${goto 222}cpu%${goto 274}mem%${color}
 ${voffset 4}     1  -  ${top name 1}${alignr}${goto 170} ${goto 222}${top cpu 1} ${goto 274}${top mem 1}
      2  -  ${top name 2}${alignr} ${goto 222}${top cpu 2} ${goto 274}${top mem 2}
      3  -  ${top name 3}${alignr} ${goto 222}${top cpu 3} ${goto 274}${top mem 3}
      4  -  ${top name 4}${alignr} ${goto 222}${top cpu 4} ${goto 274}${top mem 4}
      5  -  ${top name 5}${alignr} ${goto 222}${top cpu 5} ${goto 274}${top mem 5}
+
 ${color5}${font Roboto:size=10}M E M O R Y   ${hr 2}${font}${color}
-${color2}${offset 30}RAM: ${color}${alignr}${offset -10}${mem} / ${memmax}${alignr}${membar}
-#${color2}${offset 30}Swap:${color} ${alignr}${offset -10}${swap} / ${swapmax}${alignr}${swapbar}
-${color2}Top Processes${goto 222}cpu%${goto 274}mem%${color}
+${color2}${offset 20}RAM: ${color}${alignr}${offset -10}${mem} / ${memmax}${alignr}${membar}
+#${color2}${offset 20}Swap:${color} ${alignr}${offset -10}${swap} / ${swapmax}${alignr}${swapbar}
+
+${color2}${offset 20}Top Processes${goto 222}cpu%${goto 274}mem%${color}
 ${voffset 4}     1  -  ${top_mem name 1}${alignr}${goto 170} ${goto 222}${top_mem cpu 1} ${goto 274}${top_mem mem 1}
      2  -  ${top_mem name 2}${alignr}${goto 170} ${goto 222}${top_mem cpu 2} ${goto 274}${top_mem mem 2}
      3  -  ${top_mem name 3}${alignr}${goto 170} ${goto 222}${top_mem cpu 3} ${goto 274}${top_mem mem 3}
      4  -  ${top_mem name 4}${alignr}${goto 170} ${goto 222}${top_mem cpu 4} ${goto 274}${top_mem mem 4}
      5  -  ${top_mem name 5}${alignr}${goto 170} ${goto 222}${top_mem cpu 5} ${goto 274}${top_mem mem 5}
+
 ${color5}${font Roboto:size=10}D R I V E S   ${hr 2}${font}${color}
-${offset 30}${color2}Root :${color} ${alignr}${offset -10}${fs_used /} / ${fs_size /}${alignr}${fs_bar /}
-${offset 30}${color2}I/O Read:${color} ${alignr}${offset -10}${diskio_read /dev/sda1}${alignr}${diskiograph_read sda1 8,100}
-${offset 30}${color2}I/O Write:${color} ${alignr}${offset -10}${diskio_write /dev/sda1}${alignr}${diskiograph_write sda1 8,100}
-
-${offset 30}${color2}Home :${color} ${alignr}${offset -10}${fs_used /home} / ${fs_size /home}${alignr}${fs_bar /home}
-${offset 30}${color2}I/O Read:${color} ${alignr}${offset -10}${diskio_read /dev/sdb1}${alignr}${diskiograph_read sdb1 8,100}
-${offset 30}${color2}I/O Write:${color} ${alignr}${offset -10}${diskio_write /dev/sdb1}${alignr}${diskiograph_write sdb1 8,100}
-
+${offset 20}${color2}Root :${color} ${alignr}${offset -10}${fs_used /} / ${fs_size /}${alignr}${fs_bar /}
+${offset 20}${color2}I/O Read:${color} ${alignr}${offset -10}${diskio_read /dev/sda1}${alignr}${diskiograph_read sda1 8,100}
+${offset 20}${color2}I/O Write:${color} ${alignr}${offset -10}${diskio_write /dev/sda1}${alignr}${diskiograph_write sda1 8,100}
+${offset 20}${color2}Home :${color} ${alignr}${offset -10}${fs_used /home} / ${fs_size /home}${alignr}${fs_bar /home}
+${offset 20}${color2}I/O Read:${color} ${alignr}${offset -10}${diskio_read /dev/sdb1}${alignr}${diskiograph_read sdb1 8,100}
+${offset 20}${color2}I/O Write:${color} ${alignr}${offset -10}${diskio_write /dev/sdb1}${alignr}${diskiograph_write sdb1 8,100}
 ${color5}${color5}${font Roboto:size=10}N E T W O R K   ${hr 2}${font}${color}
-#${color2}${offset 30}IP Address: ${color} ${alignr}${offset -10$}${addrs wlx04a1516b3520}
-${color2}${offset 30}Download:${color} ${alignr}${offset -10$}${downspeed wlx04a1516b3520}${alignr}${downspeedgraph wlx04a1516b3520 8,100}
-${color2}${offset 30}Upload:${color} ${alignr}${offset -10$}${upspeed wlx04a1516b3520}${alignr}${upspeedgraph wlx04a1516b3520 8,100}
-${color5}${font Roboto:size=10}N V I D I A   ${hr 2}${font}
-#${font Roboto:size=10}${color5}${execp  nvidia-smi --query-supported-clocks=gpu_name --format=csv,noheader}${font}
-#${font StyleBats:size=20}${font}${offset 8}${voffset -12}GPU Temp ${alignr}${execi 60 nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader} °C
-${offset 30}GPU Temp ${alignr}${execi 60 nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader} °C
-${offset 30}GPU Clock ${alignr}${execi 60 nvidia-settings -q GPUCurrentClockFreqs | grep -m 1 Attribute | awk '{print $4}' | sed -e 's/\.//' | cut -d, -f1} MHz
-${offset 30}Mem Clock ${alignr}${execi 60 nvidia-settings -q all| grep -m 1 GPUCurrentClockFreqs | awk '{print $4}'  | sed -e 's/\.//' | cut -d, -f1} MHz
-${offset 30}Mem Used ${alignr}${execi 60 nvidia-settings -q [gpu:0]/UsedDedicatedGPUMemory -t} / ${exec nvidia-settings -q [gpu:0]/TotalDedicatedGPUMemory -t} MiB0
+#${color2}${offset 20}IP Address: ${color} ${alignr}${offset -10$}${addrs wlx04a1516b3520}
+${color2}${offset 20}Download:${color} ${alignr}${offset -10$}${downspeed wlx04a1516b3520}${alignr}${downspeedgraph wlx04a1516b3520 8,100}
+${color2}${offset 20}Upload:${color} ${alignr}${offset -10$}${upspeed wlx04a1516b3520}${alignr}${upspeedgraph wlx04a1516b3520 8,100}
 ]];
