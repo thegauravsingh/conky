@@ -147,13 +147,14 @@ ${color6}${voffset 4}${font GE Inspira:size=12}${alignc}${time %A} ${time %B} ${
 
 ${color5}${font Roboto:size=10}${voffset 2}S Y S T E M   ${hr 2}${font}${color}
 #${color2}${voffset 8}Hostname:${color} ${alignr}${nodename}
-${color2}Distro:${color}${alignr}$sysname ${alignr}${execi 6000 lsb_release -a | grep 'Description'|awk {'print $3, $4, $5'}}
-${color2}Kernel:${color}${alignr}${exec uname} ${exec uname -r}
+${color2}${offset 20}Distro:${color}${alignr}$sysname ${alignr}${execi 6000 lsb_release -a | grep 'Description'|awk {'print $2, $3'}}
+${color2}${offset 20}Kernel:${color}${alignr}${exec uname} ${exec uname -r}
 #Nvidia: ${alignr}${execp  nvidia-smi --query-supported-clocks=gpu_name --format=csv,noheader}
 #Nvidia Driver: ${alignr}${execi 60000 nvidia-smi | grep "Driver Version"| awk {'print $3'}}
-${color2}Uptime:${color} ${alignr}${uptime}
-${color5}${font Roboto:size=10}N V I D I A   ${hr 2}${font}
-${font Roboto:size=10}${color5}${execp  nvidia-smi --query-supported-clocks=gpu_name --format=csv,noheader}${font}
+${color2}${offset 20}Uptime:${color} ${alignr}${uptime}
+
+${color5}${font Roboto:size=10}NVIDIA GeForce RTX 2060 SUPER  ${hr 2}${font}
+#${font Roboto:size=10}${color5}${execp  nvidia-smi --query-supported-clocks=gpu_name --format=csv,noheader}${font}
 #${font StyleBats:size=20}${font}${offset 8}${voffset -12}GPU Temp ${alignr}${execi 60 nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader} °C
 ${offset 20}Driver ${alignr}${execi 60000 nvidia-smi | grep "Driver Version"| awk {'print $3'}} 
 ${offset 20}GPU Temp ${alignr}${execi 60 nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader} °C
@@ -161,11 +162,11 @@ ${offset 20}GPU Clock ${alignr}${execi 60 nvidia-settings -q GPUCurrentClockFreq
 ${offset 20}Mem Clock ${alignr}${execi 60 nvidia-settings -q all| grep -m 1 GPUCurrentClockFreqs | awk '{print $4}'  | sed -e 's/\.//' | cut -d, -f1} MHz
 ${offset 20}Mem Used ${alignr}${execi 60 nvidia-settings -q [gpu:0]/UsedDedicatedGPUMemory -t} / ${exec nvidia-settings -q [gpu:0]/TotalDedicatedGPUMemory -t} MiB0
 
-${color5}${font Roboto:size=10}A M D 2 7 0 0 X  ${hr 2}${font}${color}
-${color2}CPU Freq:${color} $alignr${freq}MHz
-${color2}CPU Temp:${color} $alignr${execi 10 sensors | grep 'Tdie' | awk {'print $2'}}
-#${color2}CPU Usage:${color} $cpu% ${cpubar 11,0}
-${color2}History:${color} ${cpugraph 11,0}
+${color5}${font Roboto:size=10}AMD Ryzen 7 2700X  ${hr 2}${font}${color}
+${color2}${offset 20}CPU Freq:${color} $alignr${freq}MHz
+${color2}${offset 20}CPU Temp:${color} $alignr${execi 10 sensors | grep 'Tdie' | awk {'print $2'}}
+#${color2}${offset 20}CPU Usage:${color} $cpu% ${cpubar 11,0}
+${color2}${offset 20}History:${color}${alignr}${cpugraph 11,100}
 #${color2}${offset 20}CPU Core 1:${color} ${alignr}${offset -10}${cpu cpu1}%${alignr}${cpubar cpu1}
 #${color2}${offset 20}CPU Core 2:${color} ${alignr}${offset -10}${cpu cpu2}%${alignr}${cpubar cpu2}
 #${color2}${offset 20}CPU Core 3:${color} ${alignr}${offset -10}${cpu cpu3}%${alignr}${cpubar cpu3}
@@ -182,10 +183,10 @@ ${color2}History:${color} ${cpugraph 11,0}
 #${color2}${offset 20}CPU Core 14:${color} ${alignr}${offset -10}${cpu cpu14}%${alignr}${cpubar cpu14}
 #${color2}${offset 20}CPU Core 15:${color} ${alignr}${offset -10}${cpu cpu15}%${alignr}${cpubar cpu15}
 #${color2}${offset 20}CPU Core 16:${color} ${alignr}${offset -10}${cpu cpu16}%${alignr}${cpubar cpu16}
-${color5}${font Roboto:size=10}C O R E S  ${hr 2}${font}${color}
+${color5}${font Roboto:size=10}RYZEN CORES  ${hr 2}${font}${color}
 
-${color2}${offset 20}${cpu cpu1}%  ${cpubar cpu1} ${alignr}${offset -10} ${cpu cpu9}%${alignr}${cpubar cpu9}
-${color2}${offset 20}${cpu cpu2}%  ${cpubar cpu2} ${alignr}${offset -10}${cpu cpu10}%${alignr}${cpubar cpu10} 
+${color2}${offset 20}${cpu cpu1}%  ${cpubar cpu1} ${alignr}${offset -10}${cpu cpu9}%${alignr}${cpubar cpu9}
+${color2}${offset 20}${cpu cpu2}%  ${cpubar cpu2} ${alignr} ${offset -5}${cpu cpu10}%${alignr}${cpubar cpu10} 
 ${color2}${offset 20}${cpu cpu3}%  ${cpubar cpu3} ${alignr}${offset -10}${cpu cpu11}%${alignr}${cpubar cpu11}
 ${color2}${offset 20}${cpu cpu4}%  ${cpubar cpu4} ${alignr}${offset -10}${cpu cpu12}%${alignr}${cpubar cpu12}
 ${color2}${offset 20}${cpu cpu5}%  ${cpubar cpu5} ${alignr}${offset -10}${cpu cpu13}%${alignr}${cpubar cpu13}
