@@ -1,10 +1,6 @@
 # conky
 This is my settings for conky!
 
-Requirments:
-sudo apt install lm-sensors
-sudo apt install conky-all
+Requirments: sudo apt install lm-sensors; sudo apt install conky-all
 
-Optional:
-sudo apt install neofetch
-sudo apt install preload
+Optional: sudo apt install neofetch; sudo apt install preload; sudo apt install stacer
